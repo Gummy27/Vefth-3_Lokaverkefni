@@ -1,33 +1,34 @@
-{% extends "interface.html" %}
+{% extends 'interface.html' %}
 
 {% block content %}
+<h1>Skilaboð:</h1>
 <main>
     <div class="accounts">
         <ol>
-        {% for account in accounts %}
+        {% for messege in messeges %}
             <ul>
-                <p>{{ account['name'] }}</p>
+                <p>{{ usernames[messege['poster']-1] }}</p>
             </ul>
         {% endfor %}
         </ol>
         <ol>
-        {% for account in accounts %}
+        {% for messege in messeges %}
             <ul>
-                <p>{{ account['password'] }}</p>
+                <p>{{ messege['messege'] }}</p>
             </ul>
         {% endfor %}
         </ol>
         <ol>
-        {% for account in accounts %}
+        {% for messege in messeges %}
             <ul>
-                <p>{{ account['name'] }}</p>
+                <p>Breyta</p>
             </ul>
         {% endfor %}
         </ol>
         <ol>
-        {% for account in accounts %}
+        {% for messege in messeges %}
             <ul>
-                <p>{{ account['password'] }}</p>
+                <p>Eyða</p>
             </ul>
         {% endfor %}
         </ol>

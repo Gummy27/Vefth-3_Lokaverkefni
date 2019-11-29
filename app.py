@@ -14,8 +14,38 @@ def getAccounts():
 	sql.execute('select * from users;')
 	accounts = sql.fetchall()
 	connection.close()
+	
+	session['user_ids'] = {}
+	session['usernames'] = []
+	for x in accounts:
+		print(x)
+		session['usernames'].append(x['name'])
+		session['user_ids'][x['name']] = x['user_id']
 
 	return accounts
+
+def getMesseges(id, poster=False):
+	password = [
+		'Swampert27'
+	]
+	connection = pymysql.connect(host='localhost', user='Gudmundur', password=password[0], db='Vefth', charset='utf8mb4', cursorclass=pymysql.cursors.DictCursor)
+	sql = connection.cursor()
+
+	if poster:
+		sql.execute(f'select * from messeges where user = {id};')
+	else:
+		sql.execute(f'select * from messeges where poster = {id};')
+	
+	return(sql.fetchall())
+
+def saveMessege(id, messege, poster):
+	password = {
+		'password':'Swampert27'}
+	connection = pymysql.connect(host='localhost', user='Gudmundur', password=password['password'], db='Vefth', charset='utf8mb4', cursorclass=pymysql.cursors.DictCursor)
+	sql = connection.cursor()
+	sql.execute(f'insert into messeges(user, messege, poster) values({id}, "{messege}", {poster});')
+	connection.commit()
+	connection.close()
 
 @app.route("/", methods=['POST', 'GET'])
 def home():
@@ -28,16 +58,12 @@ def home():
 			if account['name'] == session['user'] or account['email'] == session['user']:
 				if account['password'] == session['password']:
 					flash("Innskráning tókst!")
-					return redirect(url_for('signedIn'))
+					session['id'] = int(account['user_id'])
+					return redirect(url_for('messeges'))
 		
 		error = True
 		
 	return render_template('innskraning.html', error=error)
-
-
-@app.route("/signedIn")
-def signedIn():
-	return render_template('accounts.html', accounts=getAccounts())
 
 @app.route("/new", methods=['POST', 'GET'])
 def newSqlUser():
@@ -69,6 +95,30 @@ def newSqlUser():
 			return redirect(url_for('home'))
 
 	return render_template('nyskranning.tpl', errors=errors)
+
+@app.route("/signedIn/home")
+def messeges():
+	return render_template('messeges.tpl', messeges=getMesseges(session['id']), usernames=session['usernames'])
+
+@app.route("/signedIn/sent")
+def sent():
+	return render_template('messeges.tpl', messeges=getMesseges(session['id'], True),usernames=session['usernames'])
+
+@app.route("/signedIn/send", methods=['POST', 'GET'])
+def send():
+	if request.method == 'POST':
+		messege = request.form.get('messege')
+		receiver = session['user_ids'][request.form.get('receiver')]
+
+		saveMessege(session['id'], messege, receiver)
+		return redirect(url_for('sent'))
+
+	return render_template('send.tpl', messeges=getMesseges(session['id']))
+
+
+@app.route("/signedIn/friends")
+def listUsers():
+	pass
 
 if __name__ == '__main__':
 	app.run(debug=True)

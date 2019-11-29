@@ -12,7 +12,7 @@ main{
 
 .accounts{
     display: grid;
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: 2fr 4fr 1fr 1fr;
     padding-bottom: 20px;
 }
 .accounts ol{
@@ -35,4 +35,28 @@ main{
 .loginError{
     font-size: 0.5em;
     color: red;
+}
+
+.interface{
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+}
+
+.interface div a{
+    text-align: right;
+}
+
+.interface div{
+    display: flex;
+}
+
+.interface div:nth-child(1) a{
+    padding-left: 30px;
+}
+
+.logout{
+    justify-content: right;
+}
+.logout a{
+    padding-right: 30px;
 }
