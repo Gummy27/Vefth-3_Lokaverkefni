@@ -6,9 +6,6 @@ app = Flask(__name__)
 app.secret_key = urandom(24)
 
 def getAccounts():
-	password = [
-		'Swampert27'
-	]
 	connection = pymysql.connect(host='localhost', user='Gudmundur', password=password[0], db='Vefth', charset='utf8mb4', cursorclass=pymysql.cursors.DictCursor)
 	sql = connection.cursor()
 	sql.execute('select * from users;')
@@ -25,10 +22,7 @@ def getAccounts():
 	return accounts
 
 def getMesseges(id, poster=False):
-	password = [
-		'Swampert27'
-	]
-	connection = pymysql.connect(host='localhost', user='Gudmundur', password=password[0], db='Vefth', charset='utf8mb4', cursorclass=pymysql.cursors.DictCursor)
+	connection = pymysql.connect(host='localhost', user='Gudmundur', password="password123", db='Vefth', charset='utf8mb4', cursorclass=pymysql.cursors.DictCursor)
 	sql = connection.cursor()
 
 	if poster:
@@ -39,27 +33,21 @@ def getMesseges(id, poster=False):
 	return(sql.fetchall())
 
 def saveMessege(id, messege, poster):
-	password = {
-		'password':'Swampert27'}
-	connection = pymysql.connect(host='localhost', user='Gudmundur', password=password['password'], db='Vefth', charset='utf8mb4', cursorclass=pymysql.cursors.DictCursor)
+	connection = pymysql.connect(host='localhost', user='Gudmundur', password="password123", db='Vefth', charset='utf8mb4', cursorclass=pymysql.cursors.DictCursor)
 	sql = connection.cursor()
 	sql.execute(f'insert into messeges(user, messege, poster) values({id}, "{messege}", {poster});')
 	connection.commit()
 	connection.close()
 
 def delMessege(id):
-	password = {
-		'password':'Swampert27'}
-	connection = pymysql.connect(host='localhost', user='Gudmundur', password=password['password'], db='Vefth', charset='utf8mb4', cursorclass=pymysql.cursors.DictCursor)
+	connection = pymysql.connect(host='localhost', user='Gudmundur', password="password123", db='Vefth', charset='utf8mb4', cursorclass=pymysql.cursors.DictCursor)
 	sql = connection.cursor()
 	sql.execute(f'delete from messeges where id = {id};')
 	connection.commit()
 	connection.close()
 
 def changeMessege(id, messege):
-	password = {
-		'password':'Swampert27'}
-	connection = pymysql.connect(host='localhost', user='Gudmundur', password=password['password'], db='Vefth', charset='utf8mb4', cursorclass=pymysql.cursors.DictCursor)
+	connection = pymysql.connect(host='localhost', user='Gudmundur', password="password123", db='Vefth', charset='utf8mb4', cursorclass=pymysql.cursors.DictCursor)
 	sql = connection.cursor()
 	sql.execute(f"update messeges set messege = '{messege}' where id = {id};")
 	connection.commit()
@@ -100,10 +88,7 @@ def newSqlUser():
 				errors[1] = True
 
 		if not errors[0] and not errors[1]:
-			password=[
-				'Swampert27'
-			]
-			connection = pymysql.connect(host='localhost', user='Gudmundur', password=password[0], db='Vefth', charset='utf8mb4',cursorclass=pymysql.cursors.DictCursor)
+			connection = pymysql.connect(host='localhost', user='Gudmundur', password="password123", db='Vefth', charset='utf8mb4',cursorclass=pymysql.cursors.DictCursor)
 			command = f"insert into users(name, password, email)\nValues('{ session['user'] }', '{ session['password'] }', '{ session['email'] }');"
 			sql = connection.cursor()
 			sql.execute(command)
