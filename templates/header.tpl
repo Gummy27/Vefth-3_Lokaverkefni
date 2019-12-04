@@ -1,7 +1,7 @@
 <header class="interface">
     <div>
-        <a href="{{ url_for('messeges') }}">Home</a> 
-        <a href="{{ url_for('send') }}">Send</a>
+        <a href="{{ url_for('messeges') }}">Skilaboð</a> 
+        <a href="{{ url_for('send') }}">Senda</a>
         <a href="{{ url_for('sent') }}">Sent</a>
     </div>
     <div class="logout">

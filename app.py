@@ -47,6 +47,25 @@ def saveMessege(id, messege, poster):
 	connection.commit()
 	connection.close()
 
+def delMessege(id):
+	password = {
+		'password':'Swampert27'}
+	connection = pymysql.connect(host='localhost', user='Gudmundur', password=password['password'], db='Vefth', charset='utf8mb4', cursorclass=pymysql.cursors.DictCursor)
+	sql = connection.cursor()
+	sql.execute(f'delete from messeges where id = {id};')
+	connection.commit()
+	connection.close()
+
+def changeMessege(id, messege):
+	password = {
+		'password':'Swampert27'}
+	connection = pymysql.connect(host='localhost', user='Gudmundur', password=password['password'], db='Vefth', charset='utf8mb4', cursorclass=pymysql.cursors.DictCursor)
+	sql = connection.cursor()
+	sql.execute(f"update messeges set messege = '{messege}' where id = {id};")
+	connection.commit()
+	connection.close()
+	
+
 @app.route("/", methods=['POST', 'GET'])
 def home():
 	error = False
@@ -98,11 +117,11 @@ def newSqlUser():
 
 @app.route("/signedIn/home")
 def messeges():
-	return render_template('messeges.tpl', messeges=getMesseges(session['id']), usernames=session['usernames'])
+	return render_template('messeges.tpl', messeges=getMesseges(session['id']), usernames=session['usernames'], changes=False)
 
 @app.route("/signedIn/sent")
 def sent():
-	return render_template('messeges.tpl', messeges=getMesseges(session['id'], True),usernames=session['usernames'])
+	return render_template('messeges.tpl', messeges=getMesseges(session['id'], True),usernames=session['usernames'], changes=True)
 
 @app.route("/signedIn/send", methods=['POST', 'GET'])
 def send():
@@ -113,12 +132,22 @@ def send():
 		saveMessege(session['id'], messege, receiver)
 		return redirect(url_for('sent'))
 
-	return render_template('send.tpl', messeges=getMesseges(session['id']))
+	return render_template('send.tpl', messeges=getMesseges(session['id']), sending=True)
 
+@app.route("/signedIn/change/<int:id>", methods=['POST', 'GET'])
+def change(id):
+	if request.method == 'POST':
+		messege = request.form.get('messege')
+		changeMessege(id, messege)
+		return redirect(url_for("sent"))
 
-@app.route("/signedIn/friends")
-def listUsers():
-	pass
+	return render_template('send.tpl', sending=False)
+
+@app.route("/signedIn/delete/<int:id>")
+def delete(id):
+	print(id)
+	delMessege(id)
+	return redirect(url_for("sent"))
 
 if __name__ == '__main__':
 	app.run(debug=True)

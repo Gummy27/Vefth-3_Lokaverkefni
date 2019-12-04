@@ -6,9 +6,11 @@
         <textarea rows="4" cols="50" name="messege" required>
         </textarea>
     </div>
-    <div>
-        <input name="receiver" type=text required>
-    </div>
+    {% if sending %}
+        <div>
+            <input name="receiver" type=text required>
+        </div>
+    {% endif %}
     <div>
         <input type="submit" value="Submit">
     </div>

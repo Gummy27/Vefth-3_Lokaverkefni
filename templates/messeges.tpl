@@ -18,20 +18,22 @@
             </ul>
         {% endfor %}
         </ol>
-        <ol>
-        {% for messege in messeges %}
-            <ul>
-                <p>Breyta</p>
-            </ul>
-        {% endfor %}
-        </ol>
-        <ol>
-        {% for messege in messeges %}
-            <ul>
-                <p>Eyða</p>
-            </ul>
-        {% endfor %}
-        </ol>
+        {% if changes %}
+            <ol>
+            {% for messege in messeges %}
+                <ul>
+                    <a href="/signedIn/change/{{messege['id']}}"><p>Breyta</p></a>
+                </ul>
+            {% endfor %}
+            </ol>
+            <ol>
+            {% for messege in messeges %}
+                <ul>
+                    <a href="/signedIn/delete/{{messege['id']}}"><p>Eyða</p></a>
+                </ul>
+            {% endfor %}
+            </ol>
+        {% endif %}
     </div>
 </main>
 {% endblock %}
